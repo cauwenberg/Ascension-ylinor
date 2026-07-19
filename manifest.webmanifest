@@ -1,0 +1,17 @@
+{
+  "name": "L’Ascension de l’Hérétique",
+  "short_name": "Hérétique",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#0d0b0e",
+  "theme_color": "#171018",
+  "description": "Application dark fantasy de progression personnelle.",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
