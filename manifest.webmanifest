@@ -1,15 +1,116 @@
-{
-  "name": "Ascension — Ylinor",
-  "short_name": "Ascension",
-  "start_url": "./",
-  "display": "standalone",
-  "background_color": "#080604",
-  "theme_color": "#100b08",
-  "icons": [
-    {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml"
-    }
-  ]
-}
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#3b0715">
+  <meta name="description" content="Ascension — organisateur de tâches RPG dans l’univers d’Ylinor.">
+  <title>Ascension — Ylinor V5</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css?v=5.0.0">
+</head>
+<body>
+  <div class="world-backdrop" aria-hidden="true"></div>
+  <div class="burgundy-wash" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="fog fog-a" aria-hidden="true"></div>
+  <div class="fog fog-b" aria-hidden="true"></div>
+  <div id="particles" class="particles" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand"><span>CHRONIQUES D’YLINOR</span><h1>ASCENSION</h1><small>ORGANISER · ACCOMPLIR · PROGRESSER</small></div>
+    <div class="seal">✦</div>
+    <div class="resources">
+      <div><small>Niveau</small><b id="topLevel">1</b></div>
+      <div><small>Rang</small><b id="topRank">F</b></div>
+      <div><small>Fragments</small><b id="topFragments">0</b></div>
+      <div><small>Or</small><b id="topGold">0</b></div>
+      <div><small>Série</small><b><span id="topStreak">0</span> j</b></div>
+    </div>
+  </header>
+
+  <nav class="main-nav" id="mainNav">
+    <button class="active" data-view="today">Aujourd’hui</button>
+    <button data-view="planner">Organisateur</button>
+    <button data-view="suggestions">Propositions</button>
+    <button data-view="skills">Compétences</button>
+    <button data-view="journal">Journal</button>
+    <button data-view="settings">Réglages</button>
+  </nav>
+
+  <main class="shell">
+    <section class="view active" id="view-today">
+      <div class="hero panel ornate">
+        <div>
+          <p class="eyebrow">TABLEAU DE QUÊTES</p>
+          <h2 id="greeting">Aujourd’hui, Ylinor attend tes actes.</h2>
+          <p id="dailySummary">Choisis tes missions, puis transforme ta journée en progression.</p>
+          <div class="xp-line"><span><b id="xpNow">0</b> / <span id="xpNeed">100</span> XP</span><span>Niveau <b id="heroLevel">1</b></span></div>
+          <div class="bar"><i id="xpBar"></i></div>
+          <div class="hero-actions">
+            <button class="gold-button" id="generateDay">Générer mes quêtes du jour</button>
+            <button class="ghost-button" data-open-task>Créer une quête</button>
+          </div>
+        </div>
+        <div class="sigil-card"><div class="sigil">✦</div><b id="completionPercent">0 %</b><small>de la journée accomplie</small></div>
+      </div>
+
+      <div class="today-grid">
+        <article class="panel ornate wide"><div class="heading"><div><p class="eyebrow">MISSIONS ACTIVES</p><h3>Quêtes du jour</h3></div><button class="ghost-button" id="clearCompleted">Retirer les accomplies</button></div><div id="todayTasks" class="task-list"></div></article>
+        <article class="panel ornate"><div class="heading"><h3>Progression du jour</h3></div><div id="todaySkills" class="skill-mini-grid"></div></article>
+        <article class="panel ornate"><div class="heading"><h3>Prochaine suggestion</h3><button class="ghost-button" id="refreshQuickSuggestion">Changer</button></div><div id="quickSuggestion"></div></article>
+      </div>
+    </section>
+
+    <section class="view" id="view-planner">
+      <div class="page-title"><div><p class="eyebrow">ORGANISATEUR</p><h2>Toutes mes tâches</h2></div><button class="gold-button" data-open-task>Nouvelle tâche</button></div>
+      <div class="filterbar panel"><input id="taskSearch" placeholder="Rechercher une tâche…"><select id="taskStatus"><option value="all">Toutes</option><option value="active">Actives</option><option value="done">Accomplies</option></select><select id="taskCategory"><option value="all">Toutes les catégories</option></select><select id="taskPeriod"><option value="all">Toutes les périodes</option><option value="daily">Aujourd’hui</option><option value="weekly">Cette semaine</option><option value="someday">À faire plus tard</option></select></div>
+      <div id="plannerTasks" class="task-list planner-list"></div>
+    </section>
+
+    <section class="view" id="view-suggestions">
+      <div class="page-title"><div><p class="eyebrow">BIBLIOTHÈQUE D’YLINOR</p><h2>Propositions de quêtes</h2><p>Choisis une catégorie ou laisse le jeu composer ta journée.</p></div><button class="gold-button" id="generateFive">Proposer 5 quêtes</button></div>
+      <div id="categoryChips" class="category-chips"></div>
+      <div id="suggestionGrid" class="suggestion-grid"></div>
+    </section>
+
+    <section class="view" id="view-skills">
+      <div class="page-title"><div><p class="eyebrow">FEUILLE DE PERSONNAGE</p><h2>Compétences et statistiques</h2></div><span class="rank-medal">Rang <b id="skillsRank">F</b></span></div>
+      <div id="skillsGrid" class="skills-grid"></div>
+    </section>
+
+    <section class="view" id="view-journal">
+      <div class="page-title"><div><p class="eyebrow">CHRONIQUES</p><h2>Journal d’Ascension</h2></div></div>
+      <div id="journalList" class="journal-list"></div>
+    </section>
+
+    <section class="view" id="view-settings">
+      <div class="page-title"><div><p class="eyebrow">CONFIGURATION</p><h2>Réglages</h2></div></div>
+      <div class="settings-grid">
+        <article class="panel ornate"><h3>Génération quotidienne</h3><label>Nombre de propositions<select id="dailyCount"><option>3</option><option selected>5</option><option>7</option><option>10</option></select></label><label class="toggle"><input type="checkbox" id="avoidRepeats" checked><span>Éviter les répétitions récentes</span></label><label class="toggle"><input type="checkbox" id="balancedSkills" checked><span>Équilibrer les compétences</span></label></article>
+        <article class="panel ornate"><h3>Catégories proposées</h3><div id="settingsCategories" class="settings-categories"></div></article>
+        <article class="panel ornate"><h3>Sauvegarde</h3><p>La progression est enregistrée dans ce navigateur.</p><div class="stack"><button class="ghost-button" id="exportSave">Exporter la sauvegarde</button><label class="ghost-button file-button">Importer<input type="file" id="importSave" accept="application/json"></label><button class="danger-button" id="resetSave">Tout réinitialiser</button></div></article>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="taskDialog">
+    <form method="dialog" id="taskForm" class="dialog-card">
+      <div class="dialog-heading"><div><p class="eyebrow">NOUVELLE QUÊTE</p><h3>Ajouter une tâche</h3></div><button value="cancel">✕</button></div>
+      <label>Titre<input name="title" required maxlength="100" placeholder="Ex. Nettoyer la salle de bain"></label>
+      <label>Description<textarea name="description" maxlength="300" placeholder="Précisions facultatives"></textarea></label>
+      <div class="form-grid">
+        <label>Catégorie<select name="category" id="formCategory"></select></label>
+        <label>Période<select name="period"><option value="daily">Aujourd’hui</option><option value="weekly">Cette semaine</option><option value="someday">Plus tard</option></select></label>
+        <label>Compétence principale<select name="skill" id="formSkill"></select></label>
+        <label>Difficulté<select name="difficulty"><option value="1">Très facile</option><option value="2" selected>Facile</option><option value="3">Modérée</option><option value="4">Difficile</option><option value="5">Épique</option></select></label>
+      </div>
+      <menu><button value="cancel" class="ghost-button">Annuler</button><button value="default" class="gold-button">Ajouter la quête</button></menu>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast"></div>
+  <script src="./app.js?v=5.0.0"></script>
+</body>
+</html>

@@ -1,9 +1,15 @@
-# Ascension — Ylinor V4
-
-RPG de progression personnelle dans l’univers d’Ylinor.
-
-## Installation GitHub Pages
-Téléversez **le contenu de ce dossier** à la racine du dépôt GitHub, en remplaçant les fichiers existants.
-Le dossier `assets` doit être présent à la racine.
-
-Cette version désactive volontairement l’ancien service worker lors du premier chargement afin d’éviter l’écran bloqué sur une ancienne version.
+{
+  "name": "Ascension — Ylinor V5",
+  "short_name": "Ascension",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#080506",
+  "theme_color": "#3b0715",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
