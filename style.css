@@ -1,10 +1,88 @@
-# Ascension — Ylinor V3
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Libre+Baskerville:wght@400;700&display=swap');
 
-RPG de progression personnelle dans l’univers d’Ylinor.
-
-## Nouveautés V3
-- ambiance animée : brouillard, braises et fragments d’âme ;
-- panneaux gravés et cuivre vieilli ;
-- symboles des Primaris ;
-- avatar complet et personnalisable par parties : tête, cheveux, torse, bras, jambes, accessoires et couleurs ;
-- sauvegarde locale compatible avec la version précédente.
+:root{
+  --ink:#0b0806;--ink2:#15100d;--panel:rgba(22,15,11,.91);--panel2:rgba(35,23,16,.84);
+  --copper:#b87333;--gold:#e6b85a;--pale:#f5dfaa;--line:rgba(205,133,63,.33);
+  --text:#f5ead1;--muted:#ad9b7d;--blue:#73a7ff;--violet:#9d72ff;
+}
+*{box-sizing:border-box}html{background:#080604;color:var(--text);scroll-behavior:smooth}
+body{margin:0;min-height:100vh;font-family:"Libre Baskerville",serif;background:#080604;overflow-x:hidden}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.world-backdrop{position:fixed;inset:0;background:
+ linear-gradient(rgba(8,5,3,.45),rgba(7,5,3,.78)),
+ url("./assets/ylinor-concept.png") center top/cover fixed;filter:saturate(.78) contrast(1.08);z-index:-7}
+.vignette{position:fixed;inset:0;background:radial-gradient(circle at 50% 34%,transparent 20%,rgba(0,0,0,.2) 58%,rgba(0,0,0,.82) 100%);z-index:-6;pointer-events:none}
+.fog{position:fixed;inset:-25%;z-index:-5;pointer-events:none;opacity:.18;filter:blur(35px);background:
+ radial-gradient(ellipse at 20% 30%,rgba(210,180,150,.35),transparent 35%),
+ radial-gradient(ellipse at 76% 56%,rgba(140,130,160,.2),transparent 40%)}
+.fog-one{animation:fogA 26s ease-in-out infinite alternate}
+.fog-two{animation:fogB 34s ease-in-out infinite alternate-reverse}
+@keyframes fogA{to{transform:translate3d(8%,3%,0) scale(1.08)}}
+@keyframes fogB{to{transform:translate3d(-7%,5%,0) scale(1.12)}}
+.particles{position:fixed;inset:0;pointer-events:none;z-index:15;overflow:hidden}
+.ember,.fragment{position:absolute;bottom:-30px;display:block;animation:rise linear infinite}
+.ember{width:3px;height:3px;border-radius:50%;background:#ff7a18;box-shadow:0 0 8px #ff7a18}
+.fragment{width:9px;height:14px;background:linear-gradient(135deg,#b8d7ff,#4e6fff 45%,#a64bff);clip-path:polygon(50% 0,100% 45%,62% 100%,18% 78%,0 38%);filter:drop-shadow(0 0 6px #557cff)}
+@keyframes rise{0%{transform:translate3d(0,0,0) rotate(0);opacity:0}10%{opacity:.9}100%{transform:translate3d(var(--drift),-112vh,0) rotate(540deg);opacity:0}}
+.topbar{height:112px;padding:14px 30px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);background:linear-gradient(90deg,rgba(10,7,5,.96),rgba(25,15,10,.9),rgba(9,7,5,.96));position:sticky;top:0;z-index:30;backdrop-filter:blur(12px)}
+.brand span,.eyebrow{font-family:Cinzel,serif;color:var(--gold);font-size:.72rem;letter-spacing:.17em;margin:0}
+.brand h1{font-family:Cinzel,serif;font-size:2.25rem;letter-spacing:.28em;margin:2px 0;color:#f5d88b;text-shadow:0 0 20px rgba(230,184,90,.2)}
+.brand small{color:#c68d48;letter-spacing:.22em}
+.primaris-seal{font-size:2.4rem;color:#d99c4d;text-shadow:0 0 18px #ce8338;animation:sealPulse 3s ease-in-out infinite}
+@keyframes sealPulse{50%{filter:brightness(1.45);transform:scale(1.05)}}
+.top-stats{display:flex;align-items:center;gap:18px}.player-mini{display:flex;flex-direction:column;text-align:right}.player-mini small,.resource small{color:var(--muted);font-size:.67rem}
+.level-medallion{width:72px;height:72px;border:1px solid #c88b37;border-radius:50%;display:grid;place-content:center;text-align:center;box-shadow:inset 0 0 18px rgba(200,139,55,.18),0 0 18px rgba(200,139,55,.12)}
+.level-medallion strong{font:700 1.55rem Cinzel}.level-medallion small{font-size:.55rem;color:#d2a65c}
+.resource{display:grid;grid-template-columns:auto auto;column-gap:6px;align-items:center}.resource span{grid-row:1/3}.resource b{font-family:Cinzel}
+.main-nav{height:60px;display:flex;justify-content:center;gap:8px;padding:9px 20px;background:rgba(12,8,6,.9);border-bottom:1px solid var(--line);position:sticky;top:112px;z-index:29;backdrop-filter:blur(12px)}
+.main-nav button{color:#dcc8a2;background:transparent;border:1px solid transparent;padding:9px 15px;border-radius:8px}
+.main-nav button:hover,.main-nav button.active{color:#ffe3a0;border-color:var(--line);background:linear-gradient(180deg,rgba(115,70,35,.34),rgba(43,27,17,.55));box-shadow:inset 0 0 16px rgba(204,128,55,.08)}
+.lore-rail{position:fixed;top:184px;bottom:0;width:118px;z-index:6;display:flex;flex-direction:column;justify-content:space-evenly;text-align:center;background:linear-gradient(90deg,rgba(10,7,5,.7),transparent);pointer-events:none}
+.rail-left{left:0}.rail-right{right:0;background:linear-gradient(-90deg,rgba(10,7,5,.7),transparent)}
+.lore-rail div{display:flex;flex-direction:column;align-items:center;gap:4px}.lore-rail i{font-style:normal;font-size:1.7rem;color:#d99b4b;text-shadow:0 0 12px currentColor}.lore-rail b{font:600 .7rem Cinzel;color:#dec18c}.lore-rail small{font-size:.63rem;color:#9d886a}
+.game-shell{width:min(1260px,calc(100% - 270px));margin:28px auto 80px;position:relative;z-index:10}
+.view{display:none}.view.active{display:block;animation:viewIn .28s ease-out}@keyframes viewIn{from{opacity:0;transform:translateY(8px)}}
+.hero-grid{display:grid;grid-template-columns:1.08fr 1fr;gap:18px}.dashboard-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+.panel{position:relative;padding:20px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(145deg,var(--panel),rgba(14,10,8,.93));box-shadow:inset 0 1px rgba(255,220,160,.03),0 15px 55px rgba(0,0,0,.25);overflow:hidden}
+.engraved:before,.engraved:after{content:"";position:absolute;pointer-events:none}
+.engraved:before{inset:7px;border:1px solid rgba(184,115,51,.15);border-radius:10px}
+.engraved:after{inset:0;background:
+ linear-gradient(135deg,rgba(255,255,255,.02),transparent 15%),
+ repeating-linear-gradient(120deg,transparent 0 80px,rgba(184,115,51,.025) 81px 82px);mix-blend-mode:screen}
+.player-card{display:grid;grid-template-columns:145px 1fr;gap:22px;align-items:center;min-height:245px}
+.portrait-frame{display:grid;gap:9px}.portrait-frame>.character-stage{border-radius:14px;border:1px solid #8d592f;background:radial-gradient(circle at 50% 30%,rgba(124,84,64,.3),rgba(12,8,6,.95));overflow:hidden}
+.player-card h2,.featured h2,.page-heading h2{font:700 1.72rem Cinzel;margin:6px 0;color:#ffe7b3}
+.rank-row{display:flex;justify-content:space-between;margin-top:23px;color:#e4d3b2}.bar{height:10px;border-radius:999px;border:1px solid #734822;background:#090604;overflow:hidden}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7a3d18,#d68b35,#f5d273);box-shadow:0 0 14px #d68b35;transition:width .6s}
+.currency-strip{display:flex;justify-content:space-between;margin-top:17px;padding-top:13px;border-top:1px solid rgba(184,115,51,.18);color:#ddc9a3}
+.featured{min-height:245px;display:grid;grid-template-columns:1fr 42%;gap:16px}.featured-art{border-radius:9px;background:linear-gradient(90deg,rgba(18,11,7,.25),transparent),url("./assets/ylinor-concept.png") 68% 40%/240% auto;filter:saturate(.65) contrast(1.15);box-shadow:inset 25px 0 30px #160f0b}
+.featured p{color:#d6c5a4}.reward-line{color:#f3bd57!important;font-weight:700}.copper-button,.ghost-button{position:relative;z-index:2;border:1px solid #a5652b;color:#fff0c9;border-radius:7px;padding:10px 15px;background:linear-gradient(#a8652a,#6f3515);box-shadow:inset 0 1px rgba(255,236,190,.25),0 3px 10px rgba(0,0,0,.28)}
+.copper-button:hover{filter:brightness(1.15)}.copper-button.small{font-size:.8rem;padding:7px 10px}.ghost-button{background:rgba(18,12,8,.58);border-color:rgba(184,115,51,.35)}.ghost-button.danger{border-color:#7f342e;color:#efaaa4;margin-top:18px}
+.section-heading,.page-heading{display:flex;justify-content:space-between;align-items:center;gap:16px}.section-heading h3,.panel h3{font:600 1.08rem Cinzel;color:#f8dfab;margin:0}.page-heading{margin-bottom:18px}.page-heading h2{font-size:2rem;margin:3px 0}.quest-list{display:grid;gap:10px;margin-top:15px}.quest-item{position:relative;z-index:2;border:1px solid rgba(184,115,51,.19);border-radius:11px;padding:14px;background:rgba(8,6,4,.45);display:grid;grid-template-columns:1fr auto;gap:12px}.quest-item.completed{opacity:.48}.quest-item h4{margin:0 0 6px;font-family:Cinzel;color:#f1ddb4}.quest-item p{margin:0 0 8px;color:#a99678;font-size:.86rem}.quest-meta{font-size:.76rem;color:#c99852}.quest-actions{display:flex;gap:7px;align-items:center}.quest-actions button{padding:8px 9px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}.stat-card{position:relative;z-index:2;padding:11px 12px;border:1px solid rgba(184,115,51,.2);border-radius:10px;background:rgba(8,6,4,.4)}.stat-card .stat-top{display:flex;justify-content:space-between}.mini-bar{height:5px;background:#080604;border:1px solid #51351f;margin-top:8px;border-radius:99px;overflow:hidden}.mini-bar i{display:block;height:100%;background:linear-gradient(90deg,#6e467a,#d6854a)}
+.world-summary-card{display:grid;grid-template-columns:1fr 40%;gap:15px;margin-top:15px}.world-thumb{min-height:115px;border-radius:9px;background:url("./assets/ylinor-concept.png") 30% 75%/250%;border:1px solid var(--line)}.chronicle{margin-top:14px;padding-left:14px;border-left:2px solid #9b5a29}.chronicle h4{font-family:Cinzel;color:#ebc982;margin:0 0 8px}.chronicle p{color:#baa889;line-height:1.6}
+.quest-columns{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.character-page{display:grid;grid-template-columns:1fr 1.15fr .72fr;gap:18px}.avatar-showcase{text-align:center}.character-caption{padding-top:10px}.character-caption h3{font-size:1.4rem}.full-stat-list{display:grid;gap:12px;margin-top:16px}.full-stat{display:grid;grid-template-columns:1fr auto;gap:7px}.full-stat .mini-bar{grid-column:1/-1}.profile-panel{display:flex;flex-direction:column}.profile-value{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid rgba(184,115,51,.16)}
+.world-map{min-height:630px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);gap:18px;background:linear-gradient(rgba(11,7,5,.45),rgba(11,7,5,.78)),url("./assets/ylinor-concept.png") center/cover}.region{position:relative;z-index:2;border:1px solid rgba(220,153,77,.3);border-radius:14px;padding:18px;background:rgba(12,8,6,.72);display:flex;flex-direction:column;justify-content:end}.region.locked{filter:grayscale(1);opacity:.52}.region .region-icon{font-size:2rem}.region h3{margin:7px 0}.region button{align-self:flex-start}.shop-grid,.achievement-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.shop-card,.achievement-card{min-height:210px}.shop-card .icon,.achievement-card .icon{font-size:2.1rem}.shop-card h3,.achievement-card h3{margin:12px 0 8px}.achievement-card.locked{filter:grayscale(.9);opacity:.55}.wallet{padding:10px 15px;border:1px solid var(--line);border-radius:9px;background:rgba(8,6,4,.55)}
+.calendar-panel{max-width:900px;margin:auto}.calendar-controls{display:flex;justify-content:space-between;align-items:center}.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-top:20px}.day{aspect-ratio:1;border:1px solid rgba(184,115,51,.18);border-radius:9px;padding:7px;background:rgba(8,6,4,.5);color:#bca987}.day.head{aspect-ratio:auto;text-align:center;border:0;background:transparent;color:#e4c887}.day.done{background:radial-gradient(circle,rgba(103,73,38,.6),rgba(16,10,7,.7));color:#ffe1a0;border-color:#a76a31}.day.today{box-shadow:0 0 0 1px #e4b25b inset}
+.journal-list{display:grid;gap:14px}.journal-entry{padding:20px}.journal-entry time{color:#ae8b59;font-size:.75rem}.journal-entry h3{margin:8px 0}.journal-entry p{color:#c2b094;line-height:1.65}
+.character-stage{position:relative;margin:auto;width:180px;height:285px;filter:drop-shadow(0 20px 22px rgba(0,0,0,.6))}.character-stage.compact{width:125px;height:190px}.character-stage.full{width:260px;height:410px}
+.avatar-layer{position:absolute;left:50%;transform:translateX(-50%);transition:.2s}.avatar-aura{inset:12% 5% 3%;border-radius:50%;background:radial-gradient(circle,var(--aura) 0,transparent 64%);filter:blur(18px);opacity:.35}
+.avatar-cape{top:27%;width:68%;height:62%;background:var(--cloth);clip-path:polygon(22% 0,78% 0,100% 100%,50% 88%,0 100%);filter:brightness(.55)}
+.avatar-legs{bottom:4%;width:40%;height:38%;background:linear-gradient(90deg,var(--cloth) 0 43%,transparent 44% 56%,var(--cloth) 57%);clip-path:polygon(5% 0,95% 0,86% 100%,58% 100%,50% 22%,42% 100%,14% 100%)}
+.avatar-boots{bottom:0;width:48%;height:10%;background:var(--metal);clip-path:polygon(0 40%,38% 0,48% 100%,0 100%,52% 100%,62% 0,100% 40%,100% 100%)}
+.avatar-torso{top:31%;width:48%;height:37%;background:linear-gradient(135deg,var(--cloth),#1d1511 72%);border:2px solid var(--metal);clip-path:polygon(19% 0,81% 0,100% 26%,82% 100%,18% 100%,0 26%)}
+.avatar-chest{top:36%;width:22%;height:23%;border:2px solid var(--metal);clip-path:polygon(50% 0,100% 28%,82% 100%,18% 100%,0 28%);background:color-mix(in srgb,var(--metal) 45%,transparent)}
+.avatar-arms{top:35%;width:76%;height:38%;background:linear-gradient(90deg,var(--cloth) 0 18%,transparent 19% 81%,var(--cloth) 82%);clip-path:polygon(6% 0,24% 4%,17% 85%,5% 100%,0 88%,9% 23%,91% 23%,100% 88%,95% 100%,83% 85%,76% 4%,94% 0)}
+.avatar-gloves{top:63%;width:82%;height:12%;background:linear-gradient(90deg,var(--metal) 0 13%,transparent 14% 86%,var(--metal) 87%);clip-path:polygon(0 12%,14% 0,17% 85%,6% 100%,83% 85%,86% 0,100% 12%,94% 100%,82% 85%,18% 85%,6% 100%)}
+.avatar-neck{top:25%;width:13%;height:14%;background:var(--skin)}
+.avatar-head{top:11%;width:29%;height:22%;background:var(--skin);border-radius:48% 48% 42% 42%/43% 43% 58% 58%;box-shadow:inset -8px -6px rgba(70,35,25,.12)}
+.avatar-head[data-head="2"]{border-radius:42% 42% 49% 49%;width:31%}.avatar-head[data-head="3"]{clip-path:polygon(25% 0,75% 0,100% 35%,79% 100%,21% 100%,0 35%);border-radius:35%}
+.avatar-hair{top:8%;width:34%;height:20%;background:var(--hair);border-radius:55% 55% 35% 35%;clip-path:polygon(0 0,100% 0,92% 62%,74% 46%,68% 100%,52% 58%,34% 96%,25% 48%,8% 68%)}
+.avatar-hair[data-hair="2"]{height:28%;clip-path:polygon(7% 0,93% 0,100% 46%,82% 100%,72% 50%,55% 94%,42% 52%,22% 100%,0 43%)}.avatar-hair[data-hair="3"]{top:9%;width:38%;height:25%;border-radius:50%;clip-path:polygon(9% 0,91% 0,100% 33%,86% 100%,75% 46%,50% 70%,25% 46%,14% 100%,0 33%)}
+.avatar-face{top:19%;width:18%;height:5%;border-top:2px solid #2a1812;border-bottom:1px solid #5f3125}
+.avatar-accessory{top:5%;width:70%;height:79%;border:2px solid transparent}.avatar-accessory[data-accessory="1"]{border-top-color:var(--metal);border-radius:50%}.avatar-accessory[data-accessory="2"]{clip-path:polygon(50% 0,55% 26%,100% 31%,59% 39%,74% 100%,50% 47%,26% 100%,41% 39%,0 31%,45% 26%);background:color-mix(in srgb,var(--aura) 55%,transparent);opacity:.8}.avatar-accessory[data-accessory="3"]{width:92%;border-right:5px solid var(--metal);transform:translateX(-45%) rotate(-7deg)}.avatar-accessory[data-accessory="4"]{top:66%;width:94%;height:7%;background:linear-gradient(90deg,transparent 0 5%,var(--metal) 6% 94%,transparent 95%);transform:translateX(-50%) rotate(-18deg)}
+dialog{border:1px solid #8c5528;border-radius:14px;padding:0;background:#100b08;color:var(--text);max-width:min(920px,94vw);box-shadow:0 40px 100px #000}dialog::backdrop{background:rgba(0,0,0,.75);backdrop-filter:blur(5px)}.dialog-card{padding:22px;min-width:min(620px,88vw)}.dialog-title{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.dialog-title h3{font:600 1.3rem Cinzel;margin:0}.dialog-title button{border:0;background:transparent;color:#dec8a4;font-size:1.2rem}.dialog-card label{display:grid;gap:7px;color:#d7c39e;font-size:.85rem;margin-bottom:13px}.dialog-card input,.dialog-card textarea,.dialog-card select{background:#0b0705;color:#f1e1c0;border:1px solid #5c3a22;border-radius:7px;padding:10px}.dialog-card textarea{min-height:100px;resize:vertical}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.dialog-card menu{display:flex;justify-content:flex-end;gap:10px;padding:0;margin:18px 0 0}.avatar-dialog-card{width:min(980px,94vw)}.avatar-editor{display:grid;grid-template-columns:340px 1fr;gap:20px}.editor-preview{text-align:center;background:radial-gradient(circle,#322017,#0c0806 65%);border:1px solid var(--line);border-radius:12px;padding:15px}.editor-preview p{font-size:.75rem;color:#a68f70}.avatar-selectors{display:grid;grid-template-columns:1fr 1fr;gap:10px}.color-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.color-grid input{padding:2px;width:100%;height:42px}
+.toast{position:fixed;left:50%;bottom:30px;transform:translate(-50%,30px);opacity:0;z-index:100;background:#21130c;border:1px solid #a96b31;color:#ffe1a3;padding:12px 18px;border-radius:9px;transition:.25s}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:1100px){.lore-rail{display:none}.game-shell{width:min(960px,94%)}.top-stats .resource{display:none}.character-page{grid-template-columns:1fr 1fr}.profile-panel{grid-column:1/-1}.shop-grid,.achievement-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){.topbar{height:auto;padding:12px 14px}.brand h1{font-size:1.35rem}.brand span,.brand small,.primaris-seal,.player-mini{display:none}.top-stats{gap:8px}.level-medallion{width:52px;height:52px}.main-nav{top:76px;justify-content:flex-start;overflow-x:auto}.main-nav button{white-space:nowrap}.game-shell{width:94%;margin-top:16px}.hero-grid,.dashboard-grid,.quest-columns,.character-page,.avatar-editor{grid-template-columns:1fr}.featured{grid-template-columns:1fr}.featured-art{display:none}.player-card{grid-template-columns:105px 1fr;padding:14px}.currency-strip{flex-wrap:wrap;gap:8px}.stat-grid,.shop-grid,.achievement-grid{grid-template-columns:1fr}.world-map{grid-template-columns:1fr;grid-template-rows:auto}.avatar-showcase{min-height:500px}.form-grid,.avatar-selectors{grid-template-columns:1fr}.color-grid{grid-template-columns:repeat(3,1fr)}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}

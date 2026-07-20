@@ -1,1 +1,224 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="110" fill="#17110d"/><circle cx="256" cy="256" r="168" fill="none" stroke="#d7a84d" stroke-width="24"/><path d="M256 80l48 112 120 16-90 78 28 120-106-63-106 63 28-120-90-78 120-16z" fill="#8e4f2c" stroke="#f3d58c" stroke-width="12"/></svg>
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#100b08">
+  <meta name="description" content="Ascension — le RPG de progression personnelle dans l'univers d'Ylinor.">
+  <title>Ascension — Ylinor</title>
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css?v=4.0.0">
+</head>
+<body>
+  <div class="world-backdrop" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+  <div class="fog fog-one" aria-hidden="true"></div>
+  <div class="fog fog-two" aria-hidden="true"></div>
+  <div id="embers" class="particles embers" aria-hidden="true"></div>
+  <div id="fragments" class="particles fragments" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span>CHRONIQUES D’YLINOR</span>
+      <h1>ASCENSION</h1>
+      <small>✦ LE MONDE S’ÉVEILLE ✦</small>
+    </div>
+    <div class="primaris-seal" aria-hidden="true">◈</div>
+    <div class="top-stats">
+      <div class="player-mini"><b id="topName">Pierre</b><small id="topTitle">Le Novice</small></div>
+      <div class="level-medallion"><strong id="topLevel">1</strong><small>NIVEAU</small></div>
+      <div class="resource"><span>💠</span><b id="topSoul">0</b><small>Fragments</small></div>
+      <div class="resource"><span>🪙</span><b id="topGold">0</b><small>Or</small></div>
+      <div class="resource"><span>🔥</span><b id="topStreak">0</b><small>Jours</small></div>
+    </div>
+  </header>
+
+  <nav class="main-nav" id="mainNav" aria-label="Navigation principale">
+    <button class="active" data-view="home">⌂ Accueil</button>
+    <button data-view="quests">▤ Quêtes</button>
+    <button data-view="character">♟ Personnage</button>
+    <button data-view="world">⌘ Ylinor</button>
+    <button data-view="shop">◉ Boutique</button>
+    <button data-view="achievements">♛ Succès</button>
+    <button data-view="calendar">▦ Calendrier</button>
+    <button data-view="journal">▣ Journal</button>
+  </nav>
+
+  <aside class="lore-rail rail-left">
+    <div><i>✥</i><b>CÉLÉAS</b><small>l’ordre</small></div>
+    <div><i>✺</i><b>VINRAËS</b><small>la connaissance</small></div>
+    <div><i>◇</i><b>MÉLÉNAS</b><small>l’équilibre</small></div>
+  </aside>
+  <aside class="lore-rail rail-right">
+    <div><i>⌁</i><b>SWADOH</b><small>la discipline</small></div>
+    <div><i>✧</i><b>ANDARË</b><small>la création</small></div>
+    <div><i>⌬</i><b>ÉTHÉRIENS</b><small>l’innovation</small></div>
+  </aside>
+
+  <main class="game-shell">
+    <section class="view active" id="view-home">
+      <div class="hero-grid">
+        <article class="panel engraved player-card">
+          <div class="portrait-frame">
+            <div class="character-stage compact" id="homeAvatar"></div>
+            <button class="copper-button small" data-open-avatar>Personnaliser</button>
+          </div>
+          <div>
+            <p class="eyebrow">ÉMISSAIRE D’YLINOR</p>
+            <h2 id="homeName">Pierre</h2>
+            <p id="homeTitle">Le Novice</p>
+            <div class="rank-row"><span>Rang <b id="homeRank">F</b></span><span><b id="homeXp">0</b> / <span id="homeXpNext">100</span> XP</span></div>
+            <div class="bar"><i id="homeXpBar"></i></div>
+            <div class="currency-strip">
+              <span>💠 <b id="homeSoul">0</b> fragments</span>
+              <span>🪙 <b id="homeGold">0</b> or</span>
+              <span>🔥 <b id="homeStreak">0</b> jours</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel engraved featured">
+          <div>
+            <p class="eyebrow">QUÊTE MISE EN AVANT</p>
+            <h2 id="featuredTitle">Former les Apprentis</h2>
+            <p id="featuredDesc">Préparer ou améliorer un cours.</p>
+            <p class="reward-line" id="featuredReward">★★★ · +90 XP</p>
+            <button class="copper-button" id="featuredComplete">Accomplir</button>
+          </div>
+          <div class="featured-art" aria-hidden="true"></div>
+        </article>
+      </div>
+
+      <div class="dashboard-grid">
+        <article class="panel engraved">
+          <div class="section-heading"><h3>Quêtes du jour</h3><button class="ghost-button" data-open-quest>+ Ajouter</button></div>
+          <div id="homeQuestList" class="quest-list"></div>
+        </article>
+        <article class="panel engraved">
+          <div class="section-heading"><h3>Vertus d’Ylinor</h3><button class="ghost-button" data-view-jump="character">Voir tout</button></div>
+          <div id="homeStats" class="stat-grid"></div>
+        </article>
+        <article class="panel engraved">
+          <div class="section-heading"><h3>État du monde</h3><button class="ghost-button" data-view-jump="world">Explorer</button></div>
+          <div id="worldSummary"></div>
+        </article>
+        <article class="panel engraved">
+          <div class="section-heading"><h3>Chronique récente</h3><button class="ghost-button" data-view-jump="journal">Journal</button></div>
+          <div id="recentChronicle"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="view" id="view-quests">
+      <div class="page-heading"><div><p class="eyebrow">ORDRES DE LA GUILDE</p><h2>Quêtes</h2></div><button class="copper-button" data-open-quest>Nouvelle quête</button></div>
+      <div class="quest-columns">
+        <article class="panel engraved"><h3>Quotidiennes</h3><div id="dailyQuests" class="quest-list"></div></article>
+        <article class="panel engraved"><h3>Hebdomadaires</h3><div id="weeklyQuests" class="quest-list"></div></article>
+        <article class="panel engraved"><h3>Épiques</h3><div id="epicQuests" class="quest-list"></div></article>
+      </div>
+    </section>
+
+    <section class="view" id="view-character">
+      <div class="page-heading"><div><p class="eyebrow">FEUILLE DE PERSONNAGE</p><h2>L’Ascendant</h2></div><button class="copper-button" data-open-avatar>Modifier l’apparence</button></div>
+      <div class="character-page">
+        <article class="panel engraved avatar-showcase">
+          <div class="character-stage full" id="characterAvatar"></div>
+          <div class="character-caption"><h3 id="characterPageName">Pierre</h3><p id="characterPageTitle">Le Novice</p></div>
+        </article>
+        <article class="panel engraved"><h3>Vertus</h3><div id="allStats" class="full-stat-list"></div></article>
+        <article class="panel engraved profile-panel">
+          <h3>Progression</h3>
+          <div class="profile-value"><span>Niveau</span><b id="profileLevel">1</b></div>
+          <div class="profile-value"><span>Rang</span><b id="profileRank">F</b></div>
+          <div class="profile-value"><span>Quêtes accomplies</span><b id="profileCompleted">0</b></div>
+          <div class="profile-value"><span>Monde découvert</span><b id="profileWorld">16 %</b></div>
+          <button class="ghost-button danger" id="resetGame">Réinitialiser la sauvegarde</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="view" id="view-world">
+      <div class="page-heading"><div><p class="eyebrow">CARTE VIVANTE</p><h2>Ylinor</h2></div><span id="worldPercent">16 % découvert</span></div>
+      <div id="worldMap" class="world-map panel engraved"></div>
+    </section>
+
+    <section class="view" id="view-shop">
+      <div class="page-heading"><div><p class="eyebrow">MARCHÉ DES FRAGMENTS</p><h2>Boutique</h2></div><div class="wallet">💠 <b id="shopSoul">0</b> · 🪙 <b id="shopGold">0</b></div></div>
+      <div id="shopGrid" class="shop-grid"></div>
+    </section>
+
+    <section class="view" id="view-achievements">
+      <div class="page-heading"><div><p class="eyebrow">MÉMOIRE DU ROYAUME</p><h2>Succès</h2></div><span id="achievementCounter">0 / 12</span></div>
+      <div id="achievementGrid" class="achievement-grid"></div>
+    </section>
+
+    <section class="view" id="view-calendar">
+      <div class="page-heading"><div><p class="eyebrow">RYTHME DE L’ASCENSION</p><h2>Calendrier</h2></div><span>🔥 Série : <b id="calendarStreak">0</b></span></div>
+      <article class="panel engraved calendar-panel">
+        <div class="calendar-controls"><button class="ghost-button" id="prevMonth">←</button><h3 id="calendarTitle"></h3><button class="ghost-button" id="nextMonth">→</button></div>
+        <div id="calendarGrid" class="calendar-grid"></div>
+      </article>
+    </section>
+
+    <section class="view" id="view-journal">
+      <div class="page-heading"><div><p class="eyebrow">LES CHRONIQUES</p><h2>Journal</h2></div><button class="copper-button" data-open-journal>Écrire</button></div>
+      <div id="journalList" class="journal-list"></div>
+    </section>
+  </main>
+
+  <dialog id="questDialog">
+    <form method="dialog" id="questForm" class="dialog-card">
+      <div class="dialog-title"><h3>Nouvelle quête</h3><button value="cancel">✕</button></div>
+      <label>Titre<input name="title" required maxlength="80" placeholder="Ex. Façonner la Grotte"></label>
+      <label>Description<textarea name="description" maxlength="240" placeholder="Décris l’épreuve..."></textarea></label>
+      <div class="form-grid">
+        <label>Type<select name="type"><option value="daily">Quotidienne</option><option value="weekly">Hebdomadaire</option><option value="epic">Épique</option></select></label>
+        <label>Difficulté<select name="difficulty"><option value="1">★</option><option value="2">★★</option><option value="3">★★★</option><option value="4">★★★★</option><option value="5">★★★★★</option></select></label>
+        <label>Vertu<select name="stat" id="questStat"></select></label>
+        <label>XP<input name="xp" type="number" min="10" max="1000" value="60"></label>
+      </div>
+      <menu><button value="cancel" class="ghost-button">Annuler</button><button value="default" class="copper-button">Créer</button></menu>
+    </form>
+  </dialog>
+
+  <dialog id="avatarDialog">
+    <form method="dialog" id="avatarForm" class="dialog-card avatar-dialog-card">
+      <div class="dialog-title"><div><p class="eyebrow">ATELIER DES FORMES</p><h3>Façonner l’Ascendant</h3></div><button value="cancel">✕</button></div>
+      <div class="avatar-editor">
+        <div class="editor-preview">
+          <div class="character-stage full" id="editorAvatar"></div>
+          <p>Chaque partie peut être changée séparément.</p>
+        </div>
+        <div class="editor-controls">
+          <div class="form-grid">
+            <label>Nom<input name="name" maxlength="30"></label>
+            <label>Titre<input name="title" maxlength="50"></label>
+          </div>
+          <div id="avatarSelectors" class="avatar-selectors"></div>
+          <div class="color-grid">
+            <label>Peau<input type="color" name="skin"></label>
+            <label>Cheveux<input type="color" name="hairColor"></label>
+            <label>Tenue<input type="color" name="clothColor"></label>
+            <label>Métal<input type="color" name="metalColor"></label>
+            <label>Aura<input type="color" name="auraColor"></label>
+          </div>
+        </div>
+      </div>
+      <menu><button value="cancel" class="ghost-button">Annuler</button><button value="default" class="copper-button">Sceller l’apparence</button></menu>
+    </form>
+  </dialog>
+
+  <dialog id="journalDialog">
+    <form method="dialog" id="journalForm" class="dialog-card">
+      <div class="dialog-title"><h3>Nouvelle chronique</h3><button value="cancel">✕</button></div>
+      <label>Titre<input name="title" required maxlength="80"></label>
+      <label>Texte<textarea name="text" required maxlength="700"></textarea></label>
+      <menu><button value="cancel" class="ghost-button">Annuler</button><button value="default" class="copper-button">Sceller l’entrée</button></menu>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status"></div>
+  <script src="./app.js?v=4.0.0"></script>
+</body>
+</html>
