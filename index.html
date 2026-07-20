@@ -2,223 +2,170 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#171018" />
-  <meta name="description" content="Application dark fantasy de progression personnelle." />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#17110d" />
+  <title>Ascension — Ylinor</title>
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="style.css" />
-  <title>L’Ascension de l’Hérétique</title>
 </head>
 <body>
-  <div class="mist mist-a"></div>
-  <div class="mist mist-b"></div>
-
+  <div class="grain"></div>
   <header class="topbar">
     <div>
-      <p class="eyebrow">Chroniques personnelles</p>
-      <h1>L’Ascension de l’Hérétique</h1>
+      <p class="eyebrow">Chroniques d’Ylinor</p>
+      <h1>ASCENSION</h1>
     </div>
-    <button id="installBtn" class="ghost hidden" type="button">Installer</button>
+    <div class="player-summary">
+      <div><span id="topName">Pierre</span><small id="topTitle">Le Novice</small></div>
+      <div class="level-orb"><strong id="topLevel">1</strong><small>niv.</small></div>
+    </div>
   </header>
 
+  <nav class="nav" id="nav"></nav>
+
   <main>
-    <section class="hero card">
-      <div class="sigil" aria-hidden="true">✦</div>
-      <div class="hero-copy">
-        <p class="rank" id="rankLabel">Niveau 1 · Novice des Cendres</p>
-        <h2 id="playerName">Pierre</h2>
-        <div class="xp-row">
-          <div>
-            <span id="xpText">0 / 100 XP</span>
-            <div class="bar"><div id="xpBar" class="bar-fill"></div></div>
+    <section class="view active" id="dashboardView">
+      <div class="hero-grid">
+        <article class="panel character-card">
+          <div class="avatar-wrap">
+            <div class="avatar" id="avatarPreview">🧙</div>
+            <button class="ghost" data-action="open-avatar">Personnaliser</button>
           </div>
-          <div class="currency">
-            <span>🜚 <strong id="goldValue">0</strong></span>
-            <span>◈ <strong id="disciplineValue">50</strong></span>
+          <div class="character-info">
+            <p class="eyebrow">Émissaire d’Ylinor</p>
+            <h2 id="characterName">Pierre</h2>
+            <p id="characterTitle">Le Novice</p>
+            <div class="xp-block">
+              <div class="xp-line"><span>Rang <b id="rankLabel">F</b></span><span><b id="xpLabel">0</b> / <span id="xpNextLabel">100</span> XP</span></div>
+              <div class="progress"><i id="xpBar"></i></div>
+            </div>
+            <div class="currency-row">
+              <span>💠 <b id="soulCount">0</b> fragments</span>
+              <span>🪙 <b id="goldCount">0</b> or</span>
+              <span>🔥 <b id="streakCount">0</b> jours</span>
+            </div>
           </div>
-        </div>
+        </article>
+
+        <article class="panel featured-quest">
+          <p class="eyebrow">Quête mise en avant</p>
+          <div id="featuredQuest"></div>
+        </article>
+      </div>
+
+      <div class="dashboard-grid">
+        <article class="panel">
+          <div class="section-title"><h3>Quêtes du jour</h3><button class="small" data-action="new-quest">+ Ajouter</button></div>
+          <div id="dailyQuestList" class="quest-list"></div>
+        </article>
+
+        <article class="panel">
+          <div class="section-title"><h3>Vertus d’Ylinor</h3><button class="small" data-nav="character">Voir tout</button></div>
+          <div id="statMiniGrid" class="stat-mini-grid"></div>
+        </article>
+
+        <article class="panel world-panel">
+          <div class="section-title"><h3>État du monde</h3><button class="small" data-nav="world">Explorer</button></div>
+          <div id="worldMini"></div>
+        </article>
+
+        <article class="panel">
+          <div class="section-title"><h3>Chronique récente</h3><button class="small" data-nav="journal">Journal</button></div>
+          <div id="recentJournal" class="journal-snippet"></div>
+        </article>
       </div>
     </section>
 
-    <nav class="tabs" aria-label="Navigation">
-      <button class="tab active" data-view="quests">Quêtes</button>
-      <button class="tab" data-view="bosses">Boss</button>
-      <button class="tab" data-view="shop">Boutique</button>
-      <button class="tab" data-view="journal">Journal</button>
-      <button class="tab" data-view="profile">Profil</button>
-    </nav>
-
-    <section id="quests" class="view active">
-      <div class="section-title">
-        <div>
-          <p class="eyebrow">Ordres du jour</p>
-          <h2>Quêtes</h2>
-        </div>
-        <button class="primary" id="addQuestBtn" type="button">+ Nouvelle quête</button>
+    <section class="view" id="questsView">
+      <div class="section-header">
+        <div><p class="eyebrow">Le registre des épreuves</p><h2>Quêtes</h2></div>
+        <button class="primary" data-action="new-quest">Créer une quête</button>
       </div>
-
-      <div id="mainQuestWrap">
-        <h3 class="subheading">Quête principale</h3>
-        <div id="mainQuestList" class="stack"></div>
-      </div>
-
-      <h3 class="subheading">Quêtes secondaires</h3>
-      <div id="sideQuestList" class="stack"></div>
-      <div id="emptyQuests" class="empty hidden">Aucune quête. Le royaume attend tes ordres.</div>
+      <div class="tabs" id="questTabs"></div>
+      <div id="questBoard" class="quest-board"></div>
     </section>
 
-    <section id="bosses" class="view">
-      <div class="section-title">
-        <div>
-          <p class="eyebrow">Ennemis majeurs</p>
-          <h2>Boss</h2>
-        </div>
-        <button class="primary" id="addBossBtn" type="button">+ Nouveau boss</button>
+    <section class="view" id="characterView">
+      <div class="section-header"><div><p class="eyebrow">Portrait de l’Ascendant</p><h2>Personnage</h2></div></div>
+      <div class="character-layout">
+        <article class="panel portrait-panel">
+          <div class="avatar large" id="avatarLarge">🧙</div>
+          <h3 id="profileName">Pierre</h3>
+          <p id="profileTitle">Le Novice</p>
+          <button class="primary" data-action="open-avatar">Modifier l’avatar</button>
+        </article>
+        <article class="panel">
+          <h3>Les dix Vertus</h3>
+          <div id="statsGrid" class="stats-grid"></div>
+        </article>
       </div>
-      <div id="bossList" class="grid"></div>
-      <div id="emptyBosses" class="empty hidden">Aucun boss n’est encore apparu.</div>
     </section>
 
-    <section id="shop" class="view">
-      <div class="section-title">
-        <div>
-          <p class="eyebrow">Récompenses méritées</p>
-          <h2>Boutique</h2>
-        </div>
-        <button class="primary" id="addRewardBtn" type="button">+ Récompense</button>
-      </div>
-      <div id="shopList" class="grid"></div>
-      <div id="emptyShop" class="empty hidden">La boutique est vide.</div>
+    <section class="view" id="worldView">
+      <div class="section-header"><div><p class="eyebrow">Carte vivante</p><h2>Ylinor</h2></div><span id="worldProgressText"></span></div>
+      <div id="worldMap" class="world-map"></div>
     </section>
 
-    <section id="journal" class="view">
-      <div class="section-title">
-        <div>
-          <p class="eyebrow">Trace des actes</p>
-          <h2>Journal</h2>
-        </div>
-        <button class="danger-soft" id="resetDayBtn" type="button">Clore la journée</button>
-      </div>
-      <div class="card day-score">
-        <div>
-          <span class="score-label">Score du jour</span>
-          <strong id="dayScore">0</strong><span>/10</span>
-        </div>
-        <p id="scoreMessage">Aucune action enregistrée aujourd’hui.</p>
-      </div>
-      <div id="journalList" class="stack"></div>
+    <section class="view" id="shopView">
+      <div class="section-header"><div><p class="eyebrow">Marché des fragments</p><h2>Boutique</h2></div><div class="wallet">💠 <b id="shopSoulCount">0</b> · 🪙 <b id="shopGoldCount">0</b></div></div>
+      <div id="shopGrid" class="shop-grid"></div>
     </section>
 
-    <section id="profile" class="view">
-      <div class="section-title">
-        <div>
-          <p class="eyebrow">Feuille de personnage</p>
-          <h2>Profil</h2>
-        </div>
-      </div>
+    <section class="view" id="achievementsView">
+      <div class="section-header"><div><p class="eyebrow">Mémoire du royaume</p><h2>Succès & trophées</h2></div><span id="achievementCount"></span></div>
+      <div id="achievementGrid" class="achievement-grid"></div>
+    </section>
 
-      <form id="profileForm" class="card form-grid">
-        <label>
-          Nom
-          <input id="nameInput" maxlength="30" />
-        </label>
-        <label>
-          Seuil d’XP par niveau
-          <input id="xpStepInput" type="number" min="50" max="5000" step="50" />
-        </label>
-        <label>
-          Or actuel
-          <input id="goldInput" type="number" min="0" step="1" />
-        </label>
-        <label>
-          Discipline
-          <input id="disciplineInput" type="number" min="0" max="100" step="1" />
-        </label>
-        <button class="primary full" type="submit">Sauvegarder le profil</button>
-      </form>
-
-      <div class="card">
-        <h3>Gestion des données</h3>
-        <p class="muted">Tes données restent sur cet appareil grâce au stockage local du navigateur.</p>
-        <div class="button-row">
-          <button id="exportBtn" class="ghost" type="button">Exporter la sauvegarde</button>
-          <label class="ghost file-label">
-            Importer
-            <input id="importInput" type="file" accept="application/json" />
-          </label>
-          <button id="wipeBtn" class="danger-soft" type="button">Tout effacer</button>
-        </div>
+    <section class="view" id="calendarView">
+      <div class="section-header"><div><p class="eyebrow">Rythme de l’Ascension</p><h2>Calendrier</h2></div><div>🔥 Série actuelle : <b id="calendarStreak">0</b></div></div>
+      <div class="calendar-layout">
+        <article class="panel"><div class="calendar-head"><button class="ghost" data-action="prev-month">←</button><h3 id="calendarTitle"></h3><button class="ghost" data-action="next-month">→</button></div><div id="calendarGrid" class="calendar-grid"></div></article>
+        <article class="panel"><h3>Récompenses de série</h3><div id="streakRewards"></div></article>
       </div>
+    </section>
+
+    <section class="view" id="journalView">
+      <div class="section-header"><div><p class="eyebrow">Les chroniques</p><h2>Journal</h2></div><button class="primary" data-action="add-journal">Écrire une entrée</button></div>
+      <div id="journalList" class="journal-list"></div>
     </section>
   </main>
 
   <dialog id="questDialog">
-    <form method="dialog" id="questForm" class="modal-card">
-      <div class="modal-title">
-        <h2>Nouvelle quête</h2>
-        <button class="icon-btn" value="cancel" aria-label="Fermer">×</button>
+    <form method="dialog" id="questForm">
+      <div class="dialog-head"><h3>Nouvelle quête</h3><button value="cancel" class="icon-btn">✕</button></div>
+      <label>Titre<input name="title" required maxlength="80" placeholder="Ex. Façonner la Grotte" /></label>
+      <label>Description<textarea name="description" maxlength="240" placeholder="Décris l’épreuve..."></textarea></label>
+      <div class="form-grid">
+        <label>Type<select name="type"><option value="daily">Quotidienne</option><option value="weekly">Hebdomadaire</option><option value="epic">Épique</option></select></label>
+        <label>Difficulté<select name="difficulty"><option value="1">★</option><option value="2">★★</option><option value="3">★★★</option><option value="4">★★★★</option><option value="5">★★★★★</option></select></label>
+        <label>Vertu<select name="stat" id="questStatSelect"></select></label>
+        <label>XP<input name="xp" type="number" min="10" max="1000" value="50" /></label>
       </div>
-      <label>Titre<input id="questTitle" required maxlength="80" placeholder="Ex. Sculpter le plafond" /></label>
-      <label>Description<textarea id="questDescription" maxlength="240" placeholder="Objectif concret"></textarea></label>
-      <div class="two-col">
-        <label>Type
-          <select id="questType">
-            <option value="main">Principale</option>
-            <option value="side">Secondaire</option>
-          </select>
-        </label>
-        <label>Difficulté
-          <select id="questDifficulty">
-            <option value="easy">Facile</option>
-            <option value="medium" selected>Moyenne</option>
-            <option value="hard">Difficile</option>
-            <option value="epic">Épique</option>
-          </select>
-        </label>
-      </div>
-      <div class="two-col">
-        <label>XP<input id="questXp" type="number" min="0" max="10000" value="40" /></label>
-        <label>Or<input id="questGold" type="number" min="0" max="10000" value="10" /></label>
-      </div>
-      <label>Boss lié
-        <select id="questBoss"><option value="">Aucun</option></select>
-      </label>
-      <label>Dégâts au boss<input id="questDamage" type="number" min="0" max="10000" value="0" /></label>
-      <button class="primary full" value="default" type="submit">Créer la quête</button>
+      <menu><button value="cancel" class="ghost">Annuler</button><button value="default" class="primary">Créer</button></menu>
     </form>
   </dialog>
 
-  <dialog id="bossDialog">
-    <form method="dialog" id="bossForm" class="modal-card">
-      <div class="modal-title">
-        <h2>Nouveau boss</h2>
-        <button class="icon-btn" value="cancel" aria-label="Fermer">×</button>
-      </div>
-      <label>Nom<input id="bossName" required maxlength="80" placeholder="Ex. La Voûte Inachevée" /></label>
-      <label>Description<textarea id="bossDescription" maxlength="240"></textarea></label>
-      <div class="two-col">
-        <label>Points de vie<input id="bossHp" type="number" min="1" max="100000" value="100" /></label>
-        <label>Récompense XP<input id="bossRewardXp" type="number" min="0" value="300" /></label>
-      </div>
-      <label>Récompense or<input id="bossRewardGold" type="number" min="0" value="100" /></label>
-      <button class="primary full" value="default" type="submit">Faire apparaître</button>
+  <dialog id="avatarDialog">
+    <form method="dialog" id="avatarForm">
+      <div class="dialog-head"><h3>Personnaliser l’Ascendant</h3><button value="cancel" class="icon-btn">✕</button></div>
+      <label>Nom<input name="name" maxlength="30" /></label>
+      <label>Titre<input name="title" maxlength="50" /></label>
+      <p>Avatar</p><div id="avatarChoices" class="avatar-choices"></div>
+      <menu><button value="cancel" class="ghost">Annuler</button><button value="default" class="primary">Enregistrer</button></menu>
     </form>
   </dialog>
 
-  <dialog id="rewardDialog">
-    <form method="dialog" id="rewardForm" class="modal-card">
-      <div class="modal-title">
-        <h2>Nouvelle récompense</h2>
-        <button class="icon-btn" value="cancel" aria-label="Fermer">×</button>
-      </div>
-      <label>Nom<input id="rewardName" required maxlength="80" placeholder="Ex. Un épisode de SAO" /></label>
-      <label>Coût en or<input id="rewardCost" type="number" min="1" value="30" /></label>
-      <button class="primary full" value="default" type="submit">Ajouter à la boutique</button>
+  <dialog id="journalDialog">
+    <form method="dialog" id="journalForm">
+      <div class="dialog-head"><h3>Nouvelle chronique</h3><button value="cancel" class="icon-btn">✕</button></div>
+      <label>Titre<input name="title" required maxlength="80" /></label>
+      <label>Texte<textarea name="text" required maxlength="700"></textarea></label>
+      <menu><button value="cancel" class="ghost">Annuler</button><button value="default" class="primary">Sceller l’entrée</button></menu>
     </form>
   </dialog>
 
-  <div id="toast" role="status" aria-live="polite"></div>
+  <div id="toast" class="toast"></div>
   <script src="app.js"></script>
 </body>
 </html>
